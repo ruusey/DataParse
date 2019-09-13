@@ -23,8 +23,6 @@ public class CSVParse {
 	public static void main(String[] args) {
 		mapCSVHeaders("resources/user_sample.csv");
 	}
-	//Map all data in the the CSV file at 'path' to its respsective header columm
-	//Result = hashtable of headers and a list of their data.
 	public static void mapCSVHeaders(String path) {
 		CSVParser csvParser = null;
 		LOGGER.info("[CSVParser] Initializing CSV mapper ");
