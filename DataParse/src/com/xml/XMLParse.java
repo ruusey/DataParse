@@ -26,22 +26,39 @@ public class XMLParse {
 	}
 	public static void mapXML(String path) {
 		Document doc = parseXMLFile(path);
-		
 		Node root= doc.getDocumentElement();
 		LOGGER.info("[XMLParser] parsing XML tree '"+root.getNodeName()+"'");
 		NodeList nodeList = root.getChildNodes();
-		for(int i = 0; i<nodeList.getLength();i++) {
-			
+		for(int i = 0; i<10;i++) {
 			Node child = nodeList.item(i);
-			if(child.getNodeType()==Node.TEXT_NODE) continue;
-			NodeList childList = root.getChildNodes();
-			for(int j = 0; j < child.getChildNodes().getLength();j++) {
-				childList.item(j).getNodeName();
-			}
-			
-			LOGGER.info("[XMLParser] "+gen.serialize(child.getTextContent()));
+			recurseNode(child);
 		}
-		
+	}
+	private static Node recurseNode(Node root) {
+		if(root==null) return null;
+		if(root.getNodeType()==Node.TEXT_NODE || root.getNodeType()==Node.COMMENT_NODE) return null;
+		NamedNodeMap nodeMap = root.getAttributes();
+		//LOGGER.info("[XMLParser] "+root.getNodeName());
+		if(nodeMap!=null) {
+			for(int k = 0; k<nodeMap.getLength();k++) {
+				Node mappedNode = nodeMap.item(k);
+				String mappedName = mappedNode.getNodeName();
+				String mappedValue = mappedNode.getNodeValue();
+				LOGGER.info("[XMLParser] 	("+root.getNodeName()+") "+mappedName+"="+mappedValue);
+			}
+		}
+		NodeList childList = root.getChildNodes();
+		for(int j = 0; j < childList.getLength();j++) {
+			if(childList.item(j).getNodeType()==Node.TEXT_NODE || childList.item(j).getNodeType()==Node.COMMENT_NODE) continue;
+			Node mappedNode = childList.item(j);
+			if(mappedNode.hasChildNodes()) {
+				LOGGER.info("[XMLParser] 		("+root.getNodeName()+") "+mappedNode.getNodeName()+"<"+mappedNode.getFirstChild().getTextContent().replace("\n", "")+">");
+			}else {
+				LOGGER.info("[XMLParser] 		("+root.getNodeName()+") "+mappedNode.getNodeName()+"<"+mappedNode.getTextContent().replace("\n", "")+">");
+			}
+			recurseNode(childList.item(j));
+		}
+		return null;
 	}
 	private static Document parseXMLFile(String path){
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -49,7 +66,6 @@ public class XMLParse {
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document dom = db.parse(path);
 			dom.normalize();
-			//dom.normalizeDocument();
 			return dom;
 		}catch(ParserConfigurationException pce) {
 			pce.printStackTrace();

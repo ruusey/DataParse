@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -22,28 +23,35 @@ public class SchemaParse {
 	public static void main(String[] args) {
 		LOGGER.info("[SchemaParser] Initializing Schema mapper ");
 		mapTable("lb","service_provider");
-		
 	}
 	public static void mapTable(String schema, String table) {
 		LOGGER.info("[SchemaParser] Mapping Schema '"+schema+"."+table);
 		java.sql.Connection conn = initDbConnection(schema);
 		String SQL = "SELECT * FROM "+table;
 		try {
-			
 			java.sql.Statement st = conn.createStatement();
 			List<String> columnHeaders = new ArrayList<String>();
 			ResultSet rs = st.executeQuery(SQL);
 			ResultSetMetaData rsmd = rs.getMetaData();
+			Hashtable<String, List<String>> data = new Hashtable<String, List<String>>(0);
 			for (int i = 1; i <= rsmd.getColumnCount(); i++) {
 				columnHeaders.add(rsmd.getColumnName(i));
 			}
 			LOGGER.info("[SchemaParser] Table headers '"+gen.serialize(columnHeaders));
-			
-
+			while(rs.next()) {
+				for(String header: columnHeaders) {
+					if(!data.containsKey(header)) {
+	        			List<String> newArray = new ArrayList<String>();
+	        			newArray.add(rs.getString(header));
+	        			data.put(header, newArray);
+	        		}else {
+	        			data.get(header).add(rs.getString(header));
+	        		}
+				}
+			}
+			LOGGER.info("[SchemaParser] Table data '"+gen.serialize(data));
 		} catch (Exception e) {
-			
 			e.printStackTrace();
-
 		} finally {
 			try {
 				conn.close();
