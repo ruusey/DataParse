@@ -18,10 +18,8 @@ public class WebClient {
 	private static String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0";
 
 	private void sendPost(String url, List<NameValuePair> postParams) throws Exception {
-
 		HttpPost post = new HttpPost(url);
 
-		// add header
 		post.setHeader("Host", "accounts.google.com");
 		post.setHeader("User-Agent", USER_AGENT);
 		post.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
@@ -30,7 +28,6 @@ public class WebClient {
 		post.setHeader("Connection", "keep-alive");
 		post.setHeader("Referer", "https://accounts.google.com/ServiceLoginAuth");
 		post.setHeader("Content-Type", "application/x-www-form-urlencoded");
-
 		post.setEntity(new UrlEncodedFormEntity(postParams));
 
 		HttpResponse response = client.execute(post);
@@ -48,15 +45,11 @@ public class WebClient {
 		while ((line = rd.readLine()) != null) {
 			result.append(line);
 		}
-
-		// System.out.println(result.toString());
-
+		System.out.println(result.toString());
 	}
 	private void sendGet(String url, List<NameValuePair> postParams) throws Exception {
-
 		HttpGetWithEntity post = new HttpGetWithEntity(url);
-
-		// add header
+		
 		post.setHeader("Host", "accounts.google.com");
 		post.setHeader("User-Agent", USER_AGENT);
 		post.setHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
@@ -65,7 +58,6 @@ public class WebClient {
 		post.setHeader("Connection", "keep-alive");
 		post.setHeader("Referer", "https://accounts.google.com/ServiceLoginAuth");
 		post.setHeader("Content-Type", "application/x-www-form-urlencoded");
-
 		post.setEntity(new UrlEncodedFormEntity(postParams));
 
 		HttpResponse response = client.execute(post);
@@ -83,9 +75,7 @@ public class WebClient {
 		while ((line = rd.readLine()) != null) {
 			result.append(line);
 		}
-
-		// System.out.println(result.toString());
-
+		System.out.println(result.toString());
 	}
 
 	public String getCookies() {
