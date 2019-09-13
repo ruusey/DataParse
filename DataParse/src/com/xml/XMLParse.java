@@ -16,8 +16,6 @@ import org.xml.sax.SAXException;
 
 import com.owlike.genson.Genson;
 
-import csv.CSVParse;
-
 public class XMLParse {
 	static final Logger LOGGER = LogManager.getLogger(XMLParse.class);
 	static Genson gen = new Genson();
@@ -38,7 +36,6 @@ public class XMLParse {
 		if(root==null) return null;
 		if(root.getNodeType()==Node.TEXT_NODE || root.getNodeType()==Node.COMMENT_NODE) return null;
 		NamedNodeMap nodeMap = root.getAttributes();
-		//LOGGER.info("[XMLParser] "+root.getNodeName());
 		if(nodeMap!=null) {
 			for(int k = 0; k<nodeMap.getLength();k++) {
 				Node mappedNode = nodeMap.item(k);

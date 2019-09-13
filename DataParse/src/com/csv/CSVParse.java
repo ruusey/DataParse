@@ -9,8 +9,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -27,7 +25,6 @@ public class CSVParse {
 	}
 	//Map all data in the the CSV file at 'path' to its respsective header columm
 	//Result = hashtable of headers and a list of their data.
-	@SuppressWarnings("unused")
 	public static void mapCSVHeaders(String path) {
 		CSVParser csvParser = null;
 		LOGGER.info("[CSVParser] Initializing CSV mapper ");
@@ -52,13 +49,9 @@ public class CSVParse {
 	            			data.get(entry.getKey()).add(entry.getValue());
 	            		}
 	            	}
-//	            	if(data.get(mapped.))
-//	            	data.put(key, value)
 	            }
 	            LOGGER.info("[CSVParser] Mapped CSV file in ["+(System.currentTimeMillis()-startTime)+"ms]");
 	            LOGGER.info("[CSVParser] Result "+gen.serialize(data));
-	            
-	            
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally {

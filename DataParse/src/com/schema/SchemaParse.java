@@ -11,11 +11,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
 import com.owlike.genson.Genson;
-
-import xml.XMLParse;
 
 public class SchemaParse {
 	static final Logger LOGGER = LogManager.getLogger(SchemaParse.class);
