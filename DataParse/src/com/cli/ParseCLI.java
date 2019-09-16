@@ -23,7 +23,6 @@ public class ParseCLI {
 	static final Logger LOGGER = LogManager.getLogger(ParseCLI.class);
 
 	public static void main(String[] args) {
-		// Scanner sysIn = new Scanner(System.in);
 		LOGGER.info("[ParseCLI] Initialized...");
 		if (args.length == 2) {
 			if (args[0].contains(".") && !args[0].contains("/")) {
@@ -37,8 +36,7 @@ public class ParseCLI {
 				} catch (Exception e) {
 					LOGGER.error("[ParseCLI] " + e.getMessage());
 				}
-				writeToFile(serializePretty(schemaOut),fileOut);
-				
+				writeToFile(serializePretty(schemaOut), fileOut);
 			} else {
 				File fileIn = null;
 				File fileOut = null;
@@ -50,20 +48,19 @@ public class ParseCLI {
 				}
 				LOGGER.info("[ParseCLI] Parsing file '" + args[0] + "'");
 				switch (getFileExtension(fileIn)) {
-					case "xml":
-						List<String> xmlOut = XMLParse.mapXML(fileIn.getAbsolutePath());
-						writeToFile(serializePretty(xmlOut), fileOut);
-						break;
-					case "json":
-						List<String> jsonOut = JsonParse.mapJson(fileIn.getAbsolutePath());
-						writeToFile(serializePretty(jsonOut), fileOut);
-						break;
-					case "csv":
-						Hashtable<String, List<String>> csvOut = CSVParse.mapCSVHeaders(fileIn.getAbsolutePath());
-						writeToFile(serializePretty(csvOut), fileOut);
-						break;
+				case "xml":
+					List<String> xmlOut = XMLParse.mapXML(fileIn.getAbsolutePath());
+					writeToFile(serializePretty(xmlOut), fileOut);
+					break;
+				case "json":
+					List<String> jsonOut = JsonParse.mapJson(fileIn.getAbsolutePath());
+					writeToFile(serializePretty(jsonOut), fileOut);
+					break;
+				case "csv":
+					Hashtable<String, List<String>> csvOut = CSVParse.mapCSVHeaders(fileIn.getAbsolutePath());
+					writeToFile(serializePretty(csvOut), fileOut);
+					break;
 				}
-
 			}
 		} else {
 			LOGGER.info("[ParseCLI] Too few arguments expected <path|schema.table> <output_directory>.");
@@ -93,6 +90,5 @@ public class ParseCLI {
 		} catch (Exception e) {
 			LOGGER.error("[ParseCLI] " + e.getMessage());
 		}
-
 	}
 }

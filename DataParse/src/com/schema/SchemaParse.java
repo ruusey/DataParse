@@ -16,15 +16,17 @@ import com.owlike.genson.Genson;
 public class SchemaParse {
 	static final Logger LOGGER = LogManager.getLogger(SchemaParse.class);
 	static Genson gen = new Genson();
+
 	public static void main(String[] args) {
 		LOGGER.info("[SchemaParser] Initializing Schema mapper ");
-		mapTable("lb","service_provider");
+		mapTable("lb", "service_provider");
 	}
+
 	public static Hashtable<String, List<String>> mapTable(String schema, String table) {
 		long startTime = System.currentTimeMillis();
-		LOGGER.info("[SchemaParser] Mapping Schema '"+schema+"."+table);
+		LOGGER.info("[SchemaParser] Mapping Schema '" + schema + "." + table);
 		java.sql.Connection conn = initDbConnection(schema);
-		String SQL = "SELECT * FROM "+table;
+		String SQL = "SELECT * FROM " + table;
 		try {
 			java.sql.Statement st = conn.createStatement();
 			List<String> columnHeaders = new ArrayList<String>();
@@ -34,20 +36,20 @@ public class SchemaParse {
 			for (int i = 1; i <= rsmd.getColumnCount(); i++) {
 				columnHeaders.add(rsmd.getColumnName(i));
 			}
-			//LOGGER.info("[SchemaParser] Table headers '"+gen.serialize(columnHeaders));
-			while(rs.next()) {
-				for(String header: columnHeaders) {
-					if(!data.containsKey(header)) {
-	        			List<String> newArray = new ArrayList<String>();
-	        			newArray.add(rs.getString(header));
-	        			data.put(header, newArray);
-	        		}else {
-	        			data.get(header).add(rs.getString(header));
-	        		}
+			// LOGGER.info("[SchemaParser] Table headers '"+gen.serialize(columnHeaders));
+			while (rs.next()) {
+				for (String header : columnHeaders) {
+					if (!data.containsKey(header)) {
+						List<String> newArray = new ArrayList<String>();
+						newArray.add(rs.getString(header));
+						data.put(header, newArray);
+					} else {
+						data.get(header).add(rs.getString(header));
+					}
 				}
 			}
-			LOGGER.info("[SchemaParser] Mapped schema in ["+(System.currentTimeMillis()-startTime)+"ms]");
-			//LOGGER.info("[SchemaParser] Table data '"+gen.serialize(data));
+			LOGGER.info("[SchemaParser] Mapped schema in [" + (System.currentTimeMillis() - startTime) + "ms]");
+			// LOGGER.info("[SchemaParser] Table data '"+gen.serialize(data));
 			return data;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,6 +63,7 @@ public class SchemaParse {
 		}
 		return null;
 	}
+
 	public static java.sql.Connection initDbConnection(String schema) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -76,7 +79,7 @@ public class SchemaParse {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			conn = DriverManager.getConnection(url, USER, PASS);
 			return conn;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
