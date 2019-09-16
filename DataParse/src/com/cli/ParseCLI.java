@@ -57,10 +57,12 @@ public class ParseCLI {
 					Hashtable<String, List<String>> csvOut = CSVParse.mapCSVHeaders(fileIn.getAbsolutePath());
 					writeToFile(serializePretty(csvOut), fileOut);
 					break;
+				default:
+					LOGGER.info("[ParseCLI] Invalid arguments, expected <file_path|schema.table> <output_file>.");
 				}
 			}
 		} else {
-			LOGGER.info("[ParseCLI] Too few arguments expected <path|schema.table> <output_directory>.");
+			LOGGER.info("[ParseCLI] Too few arguments expected <file_path|schema.table> <output_file>.");
 		}
 	}
 
@@ -83,7 +85,7 @@ public class ParseCLI {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			writer.write(outTxt);
 			writer.close();
-			LOGGER.info("[ParseCLI] saved output to '" + file.getAbsolutePath() + "'");
+			LOGGER.info("[ParseCLI] Saved output to '" + file.getAbsolutePath() + "'");
 		} catch (Exception e) {
 			LOGGER.error("[ParseCLI] " + e.getMessage());
 		}

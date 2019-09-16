@@ -51,7 +51,7 @@ public class CSVParse {
 				}
 			}
 			LOGGER.info("[CSVParser] Mapped CSV file in [" + (System.currentTimeMillis() - startTime) + "ms]");
-			LOGGER.info("[CSVParser] Result " + gen.serialize(data));
+			//LOGGER.info("[CSVParser] Result " + gen.serialize(data));
 			return data;
 		} catch (Exception e) {
 			e.printStackTrace();
