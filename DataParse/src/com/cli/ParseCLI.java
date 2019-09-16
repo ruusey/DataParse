@@ -26,7 +26,7 @@ public class ParseCLI {
 		// Scanner sysIn = new Scanner(System.in);
 		LOGGER.info("[ParseCLI] initialized...");
 		if (args.length == 2) {
-			if (args[0].contains(".")) {
+			if (args[0].contains(".") && !args[0].contains("/")) {
 				String schema = args[0];
 				LOGGER.info("[ParseCLI] parsing schema '" + schema + "'");
 				String[] parts = schema.split("\\.");
