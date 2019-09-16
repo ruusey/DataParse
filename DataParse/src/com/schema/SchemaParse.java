@@ -20,7 +20,7 @@ public class SchemaParse {
 		LOGGER.info("[SchemaParser] Initializing Schema mapper ");
 		mapTable("lb","service_provider");
 	}
-	public static void mapTable(String schema, String table) {
+	public static Hashtable<String, List<String>> mapTable(String schema, String table) {
 		LOGGER.info("[SchemaParser] Mapping Schema '"+schema+"."+table);
 		java.sql.Connection conn = initDbConnection(schema);
 		String SQL = "SELECT * FROM "+table;
@@ -46,6 +46,7 @@ public class SchemaParse {
 				}
 			}
 			LOGGER.info("[SchemaParser] Table data '"+gen.serialize(data));
+			return data;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -56,6 +57,7 @@ public class SchemaParse {
 				e.printStackTrace();
 			}
 		}
+		return null;
 	}
 	public static java.sql.Connection initDbConnection(String schema) {
 		try {

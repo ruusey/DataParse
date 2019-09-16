@@ -23,7 +23,7 @@ public class CSVParse {
 	public static void main(String[] args) {
 		mapCSVHeaders("resources/user_sample.csv");
 	}
-	public static void mapCSVHeaders(String path) {
+	public static Hashtable<String, List<String>> mapCSVHeaders(String path) {
 		CSVParser csvParser = null;
 		LOGGER.info("[CSVParser] Initializing CSV mapper ");
 		long startTime = System.currentTimeMillis();
@@ -50,6 +50,7 @@ public class CSVParse {
 	            }
 	            LOGGER.info("[CSVParser] Mapped CSV file in ["+(System.currentTimeMillis()-startTime)+"ms]");
 	            LOGGER.info("[CSVParser] Result "+gen.serialize(data));
+	            return data;
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally {
@@ -60,5 +61,6 @@ public class CSVParse {
 				e.printStackTrace();
 			}
 		}
+		return null;
 	}
 }

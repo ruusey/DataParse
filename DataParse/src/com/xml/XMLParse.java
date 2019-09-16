@@ -1,6 +1,8 @@
 package xml;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,29 +21,33 @@ import com.owlike.genson.Genson;
 public class XMLParse {
 	static final Logger LOGGER = LogManager.getLogger(XMLParse.class);
 	static Genson gen = new Genson();
+	static List<String> log = new ArrayList<String>();
 	public static void main(String[] args) {
 		mapXML("resources/objects.xml");
 	}
-	public static void mapXML(String path) {
+	public static List<String> mapXML(String path) {
 		Document doc = parseXMLFile(path);
 		Node root= doc.getDocumentElement();
 		LOGGER.info("[XMLParser] parsing XML tree '"+root.getNodeName()+"'");
 		NodeList nodeList = root.getChildNodes();
-		for(int i = 0; i<10;i++) {
+		for(int i = 0; i<nodeList.getLength();i++) {
 			Node child = nodeList.item(i);
 			recurseNode(child);
 		}
+		return log;
 	}
 	private static Node recurseNode(Node root) {
 		if(root==null) return null;
 		if(root.getNodeType()==Node.TEXT_NODE || root.getNodeType()==Node.COMMENT_NODE) return null;
 		NamedNodeMap nodeMap = root.getAttributes();
+		String line = "";
 		if(nodeMap!=null) {
 			for(int k = 0; k<nodeMap.getLength();k++) {
 				Node mappedNode = nodeMap.item(k);
 				String mappedName = mappedNode.getNodeName();
 				String mappedValue = mappedNode.getNodeValue();
 				LOGGER.info("[XMLParser] 	("+root.getNodeName()+") "+mappedName+"="+mappedValue);
+				log.add("("+root.getNodeName()+") "+mappedName+"="+mappedValue);
 			}
 		}
 		NodeList childList = root.getChildNodes();
@@ -50,8 +56,10 @@ public class XMLParse {
 			Node mappedNode = childList.item(j);
 			if(mappedNode.hasChildNodes()) {
 				LOGGER.info("[XMLParser] 		("+root.getNodeName()+") "+mappedNode.getNodeName()+"<"+mappedNode.getFirstChild().getTextContent().replace("\n", "")+">");
+				log.add("("+root.getNodeName()+") "+mappedNode.getNodeName()+"<"+mappedNode.getFirstChild().getTextContent().replace("\n", "")+">");
 			}else {
 				LOGGER.info("[XMLParser] 		("+root.getNodeName()+") "+mappedNode.getNodeName()+"<"+mappedNode.getTextContent().replace("\n", "")+">");
+				log.add("("+root.getNodeName()+") "+mappedNode.getNodeName()+"<"+mappedNode.getTextContent().replace("\n", "")+">");
 			}
 			recurseNode(childList.item(j));
 		}
