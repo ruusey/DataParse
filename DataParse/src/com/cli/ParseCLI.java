@@ -24,11 +24,11 @@ public class ParseCLI {
 
 	public static void main(String[] args) {
 		// Scanner sysIn = new Scanner(System.in);
-		LOGGER.info("[ParseCLI] initialized...");
+		LOGGER.info("[ParseCLI] Initialized...");
 		if (args.length == 2) {
 			if (args[0].contains(".") && !args[0].contains("/")) {
 				String schema = args[0];
-				LOGGER.info("[ParseCLI] parsing schema '" + schema + "'");
+				LOGGER.info("[ParseCLI] Parsing schema '" + schema + "'");
 				String[] parts = schema.split("\\.");
 				Hashtable<String, List<String>> schemaOut = SchemaParse.mapTable(parts[0], parts[1]);
 				File fileOut = null;
@@ -48,7 +48,7 @@ public class ParseCLI {
 				} catch (Exception e) {
 					LOGGER.error("[ParseCLI] " + e.getMessage());
 				}
-				LOGGER.info("[ParseCLI] parsing file '" + args[0] + "'");
+				LOGGER.info("[ParseCLI] Parsing file '" + args[0] + "'");
 				switch (getFileExtension(fileIn)) {
 					case "xml":
 						List<String> xmlOut = XMLParse.mapXML(fileIn.getAbsolutePath());
@@ -66,7 +66,7 @@ public class ParseCLI {
 
 			}
 		} else {
-			LOGGER.info("[ParseCLI] too few arguments expected <path|schema.table> <output_directory>.");
+			LOGGER.info("[ParseCLI] Too few arguments expected <path|schema.table> <output_directory>.");
 		}
 	}
 

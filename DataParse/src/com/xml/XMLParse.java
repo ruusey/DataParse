@@ -26,14 +26,16 @@ public class XMLParse {
 		mapXML("resources/objects.xml");
 	}
 	public static List<String> mapXML(String path) {
+		long startTime = System.currentTimeMillis();
 		Document doc = parseXMLFile(path);
 		Node root= doc.getDocumentElement();
-		LOGGER.info("[XMLParser] parsing XML tree '"+root.getNodeName()+"'");
+		LOGGER.info("[XMLParser] Parsing XML tree '"+root.getNodeName()+"'");
 		NodeList nodeList = root.getChildNodes();
 		for(int i = 0; i<nodeList.getLength();i++) {
 			Node child = nodeList.item(i);
 			recurseNode(child);
 		}
+		LOGGER.info("[XMLParser] Mapped XML file in ["+(System.currentTimeMillis()-startTime)+"ms]");
 		return log;
 	}
 	private static Node recurseNode(Node root) {

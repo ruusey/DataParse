@@ -21,6 +21,7 @@ public class SchemaParse {
 		mapTable("lb","service_provider");
 	}
 	public static Hashtable<String, List<String>> mapTable(String schema, String table) {
+		long startTime = System.currentTimeMillis();
 		LOGGER.info("[SchemaParser] Mapping Schema '"+schema+"."+table);
 		java.sql.Connection conn = initDbConnection(schema);
 		String SQL = "SELECT * FROM "+table;
@@ -33,7 +34,7 @@ public class SchemaParse {
 			for (int i = 1; i <= rsmd.getColumnCount(); i++) {
 				columnHeaders.add(rsmd.getColumnName(i));
 			}
-			LOGGER.info("[SchemaParser] Table headers '"+gen.serialize(columnHeaders));
+			//LOGGER.info("[SchemaParser] Table headers '"+gen.serialize(columnHeaders));
 			while(rs.next()) {
 				for(String header: columnHeaders) {
 					if(!data.containsKey(header)) {
@@ -45,7 +46,8 @@ public class SchemaParse {
 	        		}
 				}
 			}
-			LOGGER.info("[SchemaParser] Table data '"+gen.serialize(data));
+			LOGGER.info("[SchemaParser] Mapped schema in ["+(System.currentTimeMillis()-startTime)+"ms]");
+			//LOGGER.info("[SchemaParser] Table data '"+gen.serialize(data));
 			return data;
 		} catch (Exception e) {
 			e.printStackTrace();

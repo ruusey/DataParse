@@ -1,0 +1,7 @@
+schema\SchemaParse.class
+json\JsonParse.class
+http\WebClient.class
+cli\ParseCLI.class
+csv\CSVParse.class
+http\HttpGetWithEntity.class
+xml\XMLParse.class
