@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -71,16 +72,24 @@ public class SchemaParse {
 			ex.printStackTrace();
 			return null;
 		}
-		String url = "jdbc:mysql://localhost:3306/lb";
-		String USER = "root";
+		Scanner creds = new Scanner(System.in);
+		String url = "jdbc:mysql://localhost:3306/"+schema;
+		String USER = "";
 		String PASS = "";
 		java.sql.Connection conn = null;
 		try {
+			
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			LOGGER.info("[SchemaParser] Enter username for '"+url+"'");
+			USER=creds.nextLine();
+			LOGGER.info("[SchemaParser] Enter password for '"+url+"'");
+			PASS=creds.nextLine();
 			conn = DriverManager.getConnection(url, USER, PASS);
 			return conn;
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			creds.close();
 		}
 		return null;
 	}
