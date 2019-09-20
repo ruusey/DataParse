@@ -15,7 +15,6 @@ public class HttpUtils {
 						.header("Content-Type", "application/json")
 						.header("Aceept-Language", "en-US,en;q=0.5");
 		return post.text();
-
 	}
 	public static String get(String url, Map<String,String> values) {
 		Get get = 	Http.get(url)
